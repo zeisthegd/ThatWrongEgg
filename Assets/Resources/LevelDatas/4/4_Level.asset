@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 762415436b0eeb643b329fa6520cc6e2, type: 3}
+  m_Name: 4_Level
+  m_EditorClassIdentifier: 
+  LevelName: 4
+  BlockMap:
+  - BlockID: FirstTeamSpawn
+    Position: {x: -3.5, y: 0.6, z: 3.5}
+    RotationAngleY: 0
+  - BlockID: FirstTeamSpawn
+    Position: {x: 3.5, y: 0.6, z: -3.5}
+    RotationAngleY: 0
+  - BlockID: SecondTeamSpawn
+    Position: {x: 3.5, y: 0.6, z: 3.5}
+    RotationAngleY: 0
+  - BlockID: SecondTeamSpawn
+    Position: {x: -3.5, y: 0.6, z: -3.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: -0.5, y: 0.6, z: 3.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: -0.5, y: 0.6, z: 2.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: 0.5, y: 0.6, z: 2.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: 0.5, y: 0.6, z: 3.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: -3.5, y: 0.6, z: 0.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: -3.5, y: 0.6, z: -0.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: -2.5, y: 0.6, z: -0.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: -2.5, y: 0.6, z: 0.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: 2.5, y: 0.6, z: 0.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: 2.5, y: 0.6, z: -0.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: 3.5, y: 0.6, z: -0.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: 3.5, y: 0.6, z: 0.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: 0.5, y: 0.6, z: -3.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: -0.5, y: 0.6, z: -3.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: -0.5, y: 0.6, z: -2.5}
+    RotationAngleY: 0
+  - BlockID: BlueCube
+    Position: {x: 0.5, y: 0.6, z: -2.5}
+    RotationAngleY: 0
