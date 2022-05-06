@@ -160,7 +160,7 @@ namespace Penwyn.Game
         #region  Input Events
         public virtual void UpdateInputEvents()
         {
-            if (InputType == WeaponInputType.NormalAttack && InputReader.Instance.IsHoldingNormalAttack)
+            if (InputType == WeaponInputType.NormalAttack && InputReader.Instance.IsHoldingKick)
             {
                 UseWeaponTillNoTargetOrEnergy();
             }

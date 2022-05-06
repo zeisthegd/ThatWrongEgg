@@ -19,7 +19,6 @@ namespace Penwyn.Game
     {
         [Header("Player")]
         public string PlayerPrefabPath;
-        public GameObject LocalPlayerMarker;
         //Player Lists
         protected List<Character> _playersInRoom;
         [ReadOnly] public Character LocalPlayer;
@@ -39,7 +38,6 @@ namespace Penwyn.Game
                 LocalPlayer = player.FindComponent<Character>();
                 PlayerSpawned?.Invoke();
                 Debug.Log("Player Created!");
-                Instantiate(LocalPlayerMarker, player.transform.position, Quaternion.Euler(-90, 0, 0), player.transform);
                 TryJoiningATeam();
             }
             FindPlayersInRooms();
@@ -47,18 +45,16 @@ namespace Penwyn.Game
 
         public virtual void TryJoiningATeam()
         {
-            PhotonTeam teamOne;
-            PhotonTeam teamTwo;
-            int teamOneCount = PhotonTeamsManager.Instance.GetTeamMembersCount(1);
-            int teamTwoCount = PhotonTeamsManager.Instance.GetTeamMembersCount(2);
-
-            PhotonTeamsManager.Instance.TryGetTeamByCode(1, out teamOne);
-            PhotonTeamsManager.Instance.TryGetTeamByCode(2, out teamTwo);
-
-            if (teamOneCount > teamTwoCount)
-                PhotonNetwork.LocalPlayer.JoinTeam(teamTwo);
-            else
-                PhotonNetwork.LocalPlayer.JoinTeam(teamOne);
+            foreach (TeamData team in CombatManager.Instance.Teams)
+            {
+                Debug.Log(team.Team.Name);
+                if (team.Players == null || team.Players.Length == 0)
+                {
+                    PhotonNetwork.LocalPlayer.JoinTeam(team.Team);
+                    Debug.Log($"Joined: {team.Team.Name}");
+                    return;
+                }
+            }
         }
 
         public void FindPlayersInRooms()
@@ -88,9 +84,6 @@ namespace Penwyn.Game
         {
 
         }
-
-        public bool LocalPlayerIsFirstTeam => PhotonNetwork.LocalPlayer.GetPhotonTeam() == CombatManager.Instance.FirstTeam.Team;
-        public bool LocalPlayerIsSecondTeam => PhotonNetwork.LocalPlayer.GetPhotonTeam() == CombatManager.Instance.SecondTeam.Team;
 
         public List<Character> PlayerInRoom { get => _playersInRoom; }
     }

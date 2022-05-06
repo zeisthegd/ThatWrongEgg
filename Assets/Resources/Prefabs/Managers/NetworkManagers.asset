@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a411629daf82146b5ec0e546423158, type: 3}
   m_Name: NetworkManagers
   m_EditorClassIdentifier: 
-  NetworkSettings: {fileID: 11400000, guid: 28a1def441c32974b9d1085a378cbce5, type: 2}
+  NetworkSettings: {fileID: 11400000, guid: 08e54e8021e98b24ea4302324469741e, type: 2}

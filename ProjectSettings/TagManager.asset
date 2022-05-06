@@ -4,9 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - FirstTeamSpawn
-  - SecondTeamSpawn
   - UserInterface
+  - Egg
+  - Spawn
   layers:
   - Default
   - TransparentFX
@@ -18,7 +18,7 @@ TagManager:
   - Projectile
   - Platform
   - Collectibles
-  - 
+  - Egg
   - 
   - 
   - 

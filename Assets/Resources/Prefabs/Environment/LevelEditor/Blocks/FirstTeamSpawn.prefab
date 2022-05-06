@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 512556035538007921}
   m_Layer: 0
   m_Name: FirstTeamSpawn
-  m_TagString: FirstTeamSpawn
+  m_TagString: Spawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

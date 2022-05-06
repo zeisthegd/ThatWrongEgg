@@ -17,14 +17,11 @@ namespace Penwyn.Tools
         public event UnityAction<Vector2> Move;
 
         //Skills Using
-        public event UnityAction NormalAttackPressed;
-        public event UnityAction NormalAttackReleased;
+        public event UnityAction KickPressed;
+        public event UnityAction KickReleased;
 
-        public event UnityAction SpecialAttackPressed;
-        public event UnityAction SpecialAttackReleased;
-
-        public event UnityAction GlidePressed;
-        public event UnityAction GlideReleased;
+        public event UnityAction ItemPressed;
+        public event UnityAction ItemReleased;
 
         public event UnityAction JumpPressed;
         public event UnityAction JumpReleased;
@@ -39,8 +36,8 @@ namespace Penwyn.Tools
 
         #region Logic Variables
 
-        public bool IsHoldingNormalAttack { get; set; }
-        public bool IsHoldingSpecialAttack { get; set; }
+        public bool IsHoldingKick { get; set; }
+        public bool IsHoldingItem { get; set; }
         public bool IsHoldingJump { get; set; }
         public bool IsHoldingGlide { get; set; }
         public bool IsHoldinghangeMouseVisibility { get; set; }
@@ -69,48 +66,35 @@ namespace Penwyn.Tools
                 MoveInput = Vector2.zero;
         }
 
-        public void OnNormalAttack(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        public void OnKick(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
             if (context.started)
             {
-                IsHoldingNormalAttack = true;
-                NormalAttackPressed?.Invoke();
+                IsHoldingKick = true;
+                KickPressed?.Invoke();
             }
             else if (context.phase == UnityEngine.InputSystem.InputActionPhase.Canceled)
             {
-                IsHoldingNormalAttack = false;
-                NormalAttackReleased?.Invoke();
+                IsHoldingKick = false;
+                KickReleased?.Invoke();
             }
 
         }
 
-        public void OnSpecialAttack(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        public void OnItem(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
             if (context.started)
             {
-                IsHoldingSpecialAttack = true;
-                SpecialAttackPressed?.Invoke();
+                IsHoldingItem = true;
+                ItemPressed?.Invoke();
             }
             else if (context.phase == UnityEngine.InputSystem.InputActionPhase.Canceled)
             {
-                IsHoldingSpecialAttack = false;
-                SpecialAttackReleased?.Invoke();
+                IsHoldingItem = false;
+                ItemReleased?.Invoke();
             }
         }
 
-        public void OnGlide(UnityEngine.InputSystem.InputAction.CallbackContext context)
-        {
-            if (context.started)
-            {
-                GlidePressed?.Invoke();
-                IsHoldingGlide = true;
-            }
-            else if (context.phase == UnityEngine.InputSystem.InputActionPhase.Canceled)
-            {
-                GlideReleased?.Invoke();
-                IsHoldingGlide = false;
-            }
-        }
 
         public void OnJump(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
@@ -151,7 +135,6 @@ namespace Penwyn.Tools
         {
             playerinput.Gameplay.Enable();
             GameplayInputEnabled?.Invoke();
-
         }
 
         public void DisableGameplayInput()
@@ -164,7 +147,6 @@ namespace Penwyn.Tools
         {
             DisableGameplayInput();
         }
-
 
         public Vector2 MoveInput { get; set; }
     }

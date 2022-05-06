@@ -1,5 +1,52 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &815403630
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 815403631}
+  - component: {fileID: 815403632}
+  m_Layer: 0
+  m_Name: Announcer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &815403631
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815403630}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3950279870636821490}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &815403632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815403630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23e13f2d74d547b428e973fd7585168b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  announceDuration: 1
+  announceTxtPref: {fileID: 8684706192466935107, guid: cd29bcee565a9ad40939985cc3ccff98,
+    type: 3}
 --- !u!1 &1205068065
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,6 +229,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1205068066}
+  - {fileID: 815403631}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -229,7 +277,7 @@ MonoBehaviour:
   LevelManager: {fileID: 3950279870636821489}
   CursorUtility: {fileID: 0}
   LevelPath: 
-  MatchSettings: {fileID: 11400000, guid: 49495899da414374eaabdb8c69fa8578, type: 2}
+  MatchSettings: {fileID: 11400000, guid: 454459a894cf36a48a6fb77e77fb808a, type: 2}
 --- !u!114 &3950279870636821489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,6 +375,10 @@ MonoBehaviour:
   listFoldIsOpen: 1
   teamsList:
   - Name: Blue
-    Code: 1
+    Code: 0
   - Name: Red
+    Code: 1
+  - Name: Orange
     Code: 2
+  - Name: Purple
+    Code: 3

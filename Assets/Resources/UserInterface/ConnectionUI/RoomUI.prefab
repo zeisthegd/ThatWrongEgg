@@ -4544,14 +4544,16 @@ MonoBehaviour:
   passcodeTxt: {fileID: 3238217371775842189}
   openSettingsBtn: {fileID: 1795536050}
   startMatchBtn: {fileID: 7971918253463228173}
-  FirstTeamList:
+  PlayerNames:
   - {fileID: 3619538495058009200}
-  - {fileID: 0}
-  SecondTeamList:
   - {fileID: 2328805879993887986}
-  - {fileID: 0}
-  FirstTeamScore: {fileID: 1280992730097580519}
-  SecondTeamScore: {fileID: 1325465983766089087}
+  - {fileID: 1793635962011172854}
+  - {fileID: 8323790960875569506}
+  PlayerScores:
+  - {fileID: 1280992730097580519}
+  - {fileID: 1325465983766089087}
+  - {fileID: 2495366737485342185}
+  - {fileID: 6304446108017103404}
   TurnTextPrefab: {fileID: 4330931030644584281, guid: bc59132fdd396fe4283ad896a606c361,
     type: 3}
   CurrentTurn: {fileID: 0}

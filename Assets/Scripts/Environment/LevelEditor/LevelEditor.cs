@@ -237,8 +237,8 @@ namespace Penwyn.LevelEditor
         {
             if (InputReader.Instance != null)
             {
-                InputReader.Instance.NormalAttackPressed += PlaceCurentBlock;
-                InputReader.Instance.SpecialAttackPressed += DeleteBlockUnderMouse;
+                InputReader.Instance.KickPressed += PlaceCurentBlock;
+                InputReader.Instance.ItemPressed += DeleteBlockUnderMouse;
             }
             else
             {
@@ -250,8 +250,8 @@ namespace Penwyn.LevelEditor
         {
             if (InputReader.Instance != null)
             {
-                InputReader.Instance.NormalAttackPressed -= PlaceCurentBlock;
-                InputReader.Instance.SpecialAttackPressed -= DeleteBlockUnderMouse;
+                InputReader.Instance.KickPressed -= PlaceCurentBlock;
+                InputReader.Instance.ItemPressed -= DeleteBlockUnderMouse;
             }
             else
             {

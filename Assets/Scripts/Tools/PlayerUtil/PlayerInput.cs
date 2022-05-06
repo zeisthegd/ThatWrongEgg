@@ -37,7 +37,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""NormalAttack"",
+                    ""name"": ""Kick"",
                     ""type"": ""PassThrough"",
                     ""id"": ""83a73beb-aafa-48f1-a4ba-e7d91cba886d"",
                     ""expectedControlType"": ""Button"",
@@ -46,18 +46,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SpecialAttack"",
+                    ""name"": ""Item"",
                     ""type"": ""PassThrough"",
                     ""id"": ""584775cb-3f05-43ab-90e3-10de3639e15d"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Hold"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Glide"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""c4fbc320-a701-405a-ab53-4d9c85670e0b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Hold"",
@@ -264,7 +255,18 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""NormalAttack"",
+                    ""action"": ""Kick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a3773ee-c5d8-4c53-bd92-c3bea1b44d84"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Kick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -275,18 +277,18 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SpecialAttack"",
+                    ""action"": ""Item"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3bf226cc-e6a8-4bb0-8a72-e421ca37f9ec"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""id"": ""4a958a66-288d-43be-b44f-6d3040910a0a"",
+                    ""path"": ""<Keyboard>/k"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Glide"",
+                    ""action"": ""Item"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -331,9 +333,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
-        m_Gameplay_NormalAttack = m_Gameplay.FindAction("NormalAttack", throwIfNotFound: true);
-        m_Gameplay_SpecialAttack = m_Gameplay.FindAction("SpecialAttack", throwIfNotFound: true);
-        m_Gameplay_Glide = m_Gameplay.FindAction("Glide", throwIfNotFound: true);
+        m_Gameplay_Kick = m_Gameplay.FindAction("Kick", throwIfNotFound: true);
+        m_Gameplay_Item = m_Gameplay.FindAction("Item", throwIfNotFound: true);
         m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_ChangeCursorVisibility = m_Gameplay.FindAction("ChangeCursorVisibility", throwIfNotFound: true);
@@ -397,9 +398,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Gameplay;
     private IGameplayActions m_GameplayActionsCallbackInterface;
     private readonly InputAction m_Gameplay_Move;
-    private readonly InputAction m_Gameplay_NormalAttack;
-    private readonly InputAction m_Gameplay_SpecialAttack;
-    private readonly InputAction m_Gameplay_Glide;
+    private readonly InputAction m_Gameplay_Kick;
+    private readonly InputAction m_Gameplay_Item;
     private readonly InputAction m_Gameplay_Look;
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_ChangeCursorVisibility;
@@ -408,9 +408,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         private @PlayerInput m_Wrapper;
         public GameplayActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
-        public InputAction @NormalAttack => m_Wrapper.m_Gameplay_NormalAttack;
-        public InputAction @SpecialAttack => m_Wrapper.m_Gameplay_SpecialAttack;
-        public InputAction @Glide => m_Wrapper.m_Gameplay_Glide;
+        public InputAction @Kick => m_Wrapper.m_Gameplay_Kick;
+        public InputAction @Item => m_Wrapper.m_Gameplay_Item;
         public InputAction @Look => m_Wrapper.m_Gameplay_Look;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @ChangeCursorVisibility => m_Wrapper.m_Gameplay_ChangeCursorVisibility;
@@ -426,15 +425,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
-                @NormalAttack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnNormalAttack;
-                @NormalAttack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnNormalAttack;
-                @NormalAttack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnNormalAttack;
-                @SpecialAttack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialAttack;
-                @SpecialAttack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialAttack;
-                @SpecialAttack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialAttack;
-                @Glide.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnGlide;
-                @Glide.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnGlide;
-                @Glide.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnGlide;
+                @Kick.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnKick;
+                @Kick.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnKick;
+                @Kick.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnKick;
+                @Item.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnItem;
+                @Item.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnItem;
+                @Item.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnItem;
                 @Look.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLook;
@@ -451,15 +447,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @NormalAttack.started += instance.OnNormalAttack;
-                @NormalAttack.performed += instance.OnNormalAttack;
-                @NormalAttack.canceled += instance.OnNormalAttack;
-                @SpecialAttack.started += instance.OnSpecialAttack;
-                @SpecialAttack.performed += instance.OnSpecialAttack;
-                @SpecialAttack.canceled += instance.OnSpecialAttack;
-                @Glide.started += instance.OnGlide;
-                @Glide.performed += instance.OnGlide;
-                @Glide.canceled += instance.OnGlide;
+                @Kick.started += instance.OnKick;
+                @Kick.performed += instance.OnKick;
+                @Kick.canceled += instance.OnKick;
+                @Item.started += instance.OnItem;
+                @Item.performed += instance.OnItem;
+                @Item.canceled += instance.OnItem;
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
@@ -476,9 +469,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IGameplayActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnNormalAttack(InputAction.CallbackContext context);
-        void OnSpecialAttack(InputAction.CallbackContext context);
-        void OnGlide(InputAction.CallbackContext context);
+        void OnKick(InputAction.CallbackContext context);
+        void OnItem(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnChangeCursorVisibility(InputAction.CallbackContext context);

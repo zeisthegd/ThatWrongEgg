@@ -11,7 +11,7 @@ namespace Penwyn.Tools
 
         public virtual void AddMoneyTo()
         {
-            Characters.Player.CharacterMoney.Add(Amount);
+            
         }
     }
 }

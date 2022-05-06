@@ -12,7 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b2ea16523b93a44bf69b30e4bd400c, type: 3}
   m_Name: PlayerManager
   m_EditorClassIdentifier: 
-  PlayerPrefabPath: Prefabs/Character/Player/Chicken
-  LocalPlayerMarker: {fileID: 4987888652526050738, guid: c3cde6ebde77626498b0a6c06bc29b81,
-    type: 3}
+  PlayerPrefabPath: Prefabs/Character/Player/Player/Chicken
   LocalPlayer: {fileID: 0}

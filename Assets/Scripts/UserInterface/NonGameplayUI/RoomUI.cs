@@ -21,11 +21,10 @@ namespace Penwyn.UI
         [SerializeField] Button startMatchBtn;
 
         [Header("Teams")]
-        public List<TMP_Text> FirstTeamList;
-        public List<TMP_Text> SecondTeamList;
+        public List<TMP_Text> PlayerNames;
         [Header("Score")]
-        public TMP_Text FirstTeamScore;
-        public TMP_Text SecondTeamScore;
+        public List<TMP_Text> PlayerScores;
+
         [Header("Turns")]
         public TMP_Text TurnTextPrefab;
         public TMP_Text CurrentTurn;
@@ -34,7 +33,6 @@ namespace Penwyn.UI
         void Awake()
         {
             PhotonTeamsManager.PlayerJoinedTeam += ShowTeams;
-            CombatManager.Instance.TurnChanged += ShowTurns;
             CombatManager.Instance.ScoreChanged += ShowScore;
         }
 
@@ -69,36 +67,27 @@ namespace Penwyn.UI
 
         public virtual void ShowTeams(Photon.Realtime.Player player, PhotonTeam teamJoined)
         {
-            Debug.Log("Show teams!");
-            Photon.Realtime.Player[] team;
-            PhotonTeamsManager.Instance.TryGetTeamMembers(1, out team);
-            for (int i = 0; i < team.Length; i++)
+            for (int i = 0; i < CombatManager.Instance.Teams.Count; i++)
             {
-                FirstTeamList[i].SetText(team[i].NickName + "");
+                if (CombatManager.Instance.Teams[i].Players != null && CombatManager.Instance.Teams[i].Players.Length > 0)
+                {
+                    Debug.Log($"{i}|{CombatManager.Instance.Teams[i].Team.Name}|{CombatManager.Instance.Teams[i].Players[0].NickName}");
+                    PlayerNames[i].SetText(CombatManager.Instance.Teams[i].Players[0].NickName + "");
+                }
             }
-            PhotonTeamsManager.Instance.TryGetTeamMembers(2, out team);
-            for (int i = 0; i < team.Length; i++)
-            {
-                SecondTeamList[i].SetText(team[i].NickName + "");
-            }
+            Debug.Log("Showed teams!");
         }
 
         public virtual void ShowScore()
         {
-            FirstTeamScore.SetText(CombatManager.Instance.FirstTeam.Score + "");
-            SecondTeamScore.SetText(CombatManager.Instance.SecondTeam.Score + "");
+            for (int i = 0; i < CombatManager.Instance.Teams.Count; i++)
+            {
+                if (CombatManager.Instance.Teams[i].Players != null)
+                    PlayerScores[i].SetText(CombatManager.Instance.Teams[i].Score + "");
+            }
+            Debug.Log("Showed scores!");
         }
 
-        public virtual void ShowTurns()
-        {
-            // for (int i = 0; i < CombatManager.Instance.TurnQueue.Count; i++)
-            // {
-            //     Player[] turns = CombatManager.Instance.TurnQueue.ToArray();
-            //     TMP_Text turnText = Instantiate(TurnTextPrefab, Container.position, Quaternion.identity, Container);
-            //     turnText.SetText(turns[i].NickName);
-            // }
-            CurrentTurn.SetText(CombatManager.Instance.CurrentPlayer.NickName);
-        }
 
         void OnEnable()
         {

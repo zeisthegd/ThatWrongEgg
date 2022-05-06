@@ -29,7 +29,7 @@ namespace Penwyn.Game
             if (CurrentLevelIndex + 1 < LevelDataList.List.Count)
                 LoadLevelByIndex(CurrentLevelIndex + 1);
             else
-                Announcer.Instance.Announce("There no level left! Thank you for playing!");
+                Announcer.Instance.Announce("There's no level left! Thank you for playing!");
         }
 
         public virtual void LoadLevelByIndex(int index)
@@ -54,6 +54,11 @@ namespace Penwyn.Game
             MoveLocalPlayerIntoPosition();
         }
 
+        #region Level Generation
+
+        /// <summary>
+        /// Use level data to spawn level blocks.
+        /// </summary>
         protected virtual void CreateBlocks(LevelData data)
         {
             foreach (TileData tile in data.BlockMap)
@@ -66,25 +71,17 @@ namespace Penwyn.Game
             }
         }
 
-        protected virtual void MoveLocalPlayerIntoPosition()
+        /// <summary>
+        /// Destroy all placed blocks
+        /// </summary>
+        [Button("Clean All Blocks", EButtonEnableMode.Playmode)]
+        public virtual void CleanAllBlocks()
         {
-            Debug.Log(PlacedBlocks.Count);
-            string spawnTag = "";
-            Player[] teamMembers;
-
-            if (PlayerManager.Instance.LocalPlayerIsFirstTeam)
+            for (int i = 0; i < PlacedBlocks.Count; i++)
             {
-                spawnTag = "FirstTeamSpawn";
-                teamMembers = CombatManager.Instance.FirstTeam.Players;
+                Destroy(PlacedBlocks[i].gameObject);
             }
-            else
-            {
-                spawnTag = "SecondTeamSpawn";
-                teamMembers = CombatManager.Instance.SecondTeam.Players;
-            }
-
-            GameObject[] spawns = GameObject.FindGameObjectsWithTag(spawnTag);
-            PlayerManager.Instance.LocalPlayer.transform.DOMove(spawns[Array.IndexOf(teamMembers, PhotonNetwork.LocalPlayer)].transform.position, 1);
+            PlacedBlocks.Clear();
         }
 
         /// <summary>
@@ -100,17 +97,17 @@ namespace Penwyn.Game
             return null;
         }
 
+        #endregion
+
+        
         /// <summary>
-        /// Destroy all placed blocks
+        /// Get all the spawns. Move player to the i spawn.
         /// </summary>
-        [Button("Clean All Blocks", EButtonEnableMode.Playmode)]
-        public virtual void CleanAllBlocks()
+        protected virtual void MoveLocalPlayerIntoPosition()
         {
-            for (int i = 0; i < PlacedBlocks.Count; i++)
-            {
-                Destroy(PlacedBlocks[i].gameObject);
-            }
-            PlacedBlocks.Clear();
+            GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawn");
+            Player[] teamMembers = CombatManager.Instance.Teams[PhotonNetwork.LocalPlayer.GetPhotonTeam().Code].Players;
+            PlayerManager.Instance.LocalPlayer.transform.DOMove(spawns[Array.IndexOf(teamMembers, PhotonNetwork.LocalPlayer)].transform.position, 1);
         }
     }
 }

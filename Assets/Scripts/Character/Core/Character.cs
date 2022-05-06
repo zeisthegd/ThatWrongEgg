@@ -25,7 +25,6 @@ namespace Penwyn.Game
 
         [Header("Stats")]
         public Health Health;
-        public Energy Energy;
 
         [Header("Abilities")]
         public List<GameObject> AbilitiesContainer;
@@ -34,7 +33,7 @@ namespace Penwyn.Game
         protected List<CharacterAbility> _abilities;
         protected CharacterWeaponHandler _characterWeaponHandler;
         protected Character3DRun _characterRun;
-        protected CharacterHandleMoney _characterMoney;
+        protected CharacterEggManager _characterEggManager;
         private StateMachine<CharacterAbilityStates> _states;
 
         protected virtual void Awake()
@@ -105,7 +104,7 @@ namespace Penwyn.Game
         {
             _characterRun = FindAbility<Character3DRun>();
             _characterWeaponHandler = FindAbility<CharacterWeaponHandler>();
-            _characterMoney = FindAbility<CharacterHandleMoney>();
+            _characterEggManager = FindAbility<CharacterEggManager>();
         }
 
         public virtual T FindAbility<T>() where T : CharacterAbility
@@ -137,7 +136,7 @@ namespace Penwyn.Game
         public Vector3 Position { get => transform.position; }
         public List<CharacterAbility> Abilities { get => _abilities; }
         public Character3DRun CharacterRun { get => _characterRun; }
-        public CharacterHandleMoney CharacterMoney { get => _characterMoney; }
+        public CharacterEggManager CharacterEggManager { get => _characterEggManager; }
         public CharacterWeaponHandler CharacterWeaponHandler { get => _characterWeaponHandler; }
         public StateMachine<CharacterAbilityStates> States { get => _states; set => _states = value; }
     }

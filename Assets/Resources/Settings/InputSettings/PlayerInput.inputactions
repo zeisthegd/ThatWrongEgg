@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "NormalAttack",
+                    "name": "Kick",
                     "type": "PassThrough",
                     "id": "83a73beb-aafa-48f1-a4ba-e7d91cba886d",
                     "expectedControlType": "Button",
@@ -24,18 +24,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SpecialAttack",
+                    "name": "Item",
                     "type": "PassThrough",
                     "id": "584775cb-3f05-43ab-90e3-10de3639e15d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Hold",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Glide",
-                    "type": "PassThrough",
-                    "id": "c4fbc320-a701-405a-ab53-4d9c85670e0b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Hold",
@@ -242,7 +233,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "NormalAttack",
+                    "action": "Kick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4a3773ee-c5d8-4c53-bd92-c3bea1b44d84",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Kick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -253,18 +255,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SpecialAttack",
+                    "action": "Item",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "3bf226cc-e6a8-4bb0-8a72-e421ca37f9ec",
-                    "path": "<Keyboard>/leftShift",
+                    "id": "4a958a66-288d-43be-b44f-6d3040910a0a",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Glide",
+                    "action": "Item",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

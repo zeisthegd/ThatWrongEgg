@@ -87,17 +87,14 @@ namespace Penwyn.Game
         public IEnumerator StartGameCoroutine()
         {
             _gameState = GameState.LevelLoading;
-            Time.timeScale = 1;
             InputReader.Instance.DisableGameplayInput();
-            PlayerManager.Instance.LocalPlayer.Energy.Set(1);
-
             CombatManager.StartGame();
             LevelManager.LoadLevelByIndex(0);
             yield return new WaitForSeconds(MatchSettings.LevelLoadTime + MatchSettings.PlayerPositioningTime);
             InputReader.Instance.EnableGameplayInput();
+            PlayerManager.Instance.LocalPlayer.CharacterEggManager.CreateNetworkedEgg();
             _gameState = GameState.Started;
         }
-
 
         /// <summary>
         /// Disable input and load the next level.
@@ -108,10 +105,8 @@ namespace Penwyn.Game
             _gameState = GameState.LevelLoading;
             yield return new WaitForSeconds(MatchSettings.LevelLoadTime + MatchSettings.PlayerPositioningTime);
 
-            Time.timeScale = 1;
             InputReader.Instance.DisableGameplayInput();
             PlayerManager.LocalPlayer.Health.Reset();
-            PlayerManager.Instance.LocalPlayer.Energy.Set(1);
 
             LevelManager.LoadNextLevel();
             yield return new WaitForSeconds(MatchSettings.LevelLoadTime + MatchSettings.PlayerPositioningTime);
