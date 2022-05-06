@@ -274,8 +274,6 @@ MonoBehaviour:
   AudioPlayer: {fileID: 1205068067}
   CombatManager: {fileID: 2049655616}
   LevelManager: {fileID: 3950279870636821489}
-  CursorUtility: {fileID: 0}
-  LevelPath: 
   MatchSettings: {fileID: 11400000, guid: 454459a894cf36a48a6fb77e77fb808a, type: 2}
 --- !u!114 &3950279870636821489
 MonoBehaviour:

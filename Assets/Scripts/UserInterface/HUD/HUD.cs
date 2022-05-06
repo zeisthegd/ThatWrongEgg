@@ -14,26 +14,34 @@ namespace Penwyn.UI
     public class HUD : SingletonMonoBehaviour<HUD>
     {
         [Header("Player")]
-        public Button WeaponButton;
+        public Button ItemButton;
+        [Header("Match")]
+        public TMP_Text TimerTxt;
 
 
         protected Character _localPlayer;
         protected Weapon _localPlayerWeapon;
+
         protected virtual void Awake()
         {
             PlayerManager.Instance.PlayerSpawned += OnPlayerSpawned;
         }
 
 
-        #region  Weapon HUD
-        
-        public virtual void SetWeaponButtonIcon()
+        public virtual void Update()
         {
-            if (WeaponButton != null)
-                WeaponButton.image.sprite = _localPlayerWeapon.CurrentData.Icon;
+            TimerTxt.SetText(CombatManager.Instance.CurrentRoundTime + "");
         }
 
-         protected virtual void OnWeaponChanged()
+
+        #region  Weapon HUD
+
+        public virtual void SetWeaponButtonIcon()
+        {
+
+        }
+
+        protected virtual void OnItemChanged()
         {
             if (_localPlayer.CharacterWeaponHandler != null)
             {
@@ -47,11 +55,11 @@ namespace Penwyn.UI
         protected virtual void OnPlayerSpawned()
         {
             _localPlayer = PlayerManager.Instance.LocalPlayer;
-            OnWeaponChanged();
+            OnItemChanged();
             ConnectEvents();
         }
 
-       
+
 
         protected virtual void OnEnable()
         {
@@ -66,13 +74,13 @@ namespace Penwyn.UI
         public virtual void ConnectEvents()
         {
             if (_localPlayer.CharacterWeaponHandler)
-                _localPlayer.CharacterWeaponHandler.WeaponChanged += OnWeaponChanged;
+                _localPlayer.CharacterWeaponHandler.WeaponChanged += OnItemChanged;
         }
 
         public virtual void DisconnectEvents()
         {
             if (_localPlayer.CharacterWeaponHandler)
-                _localPlayer.CharacterWeaponHandler.WeaponChanged -= OnWeaponChanged;
+                _localPlayer.CharacterWeaponHandler.WeaponChanged -= OnItemChanged;
             PlayerManager.Instance.PlayerSpawned -= OnPlayerSpawned;
         }
     }

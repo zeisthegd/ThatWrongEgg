@@ -18,7 +18,7 @@ namespace Penwyn.Game
             _health.OnDeath += SpawnExplosion;
         }
 
-        public virtual void SpawnExplosion(Character grenade)
+        public virtual void SpawnExplosion()
         {
             var explosion = ExplosionPooler.PullOneObject();
             explosion.transform.position = this.transform.position;

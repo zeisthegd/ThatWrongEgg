@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+using Photon.Pun;
 using NaughtyAttributes;
 using Penwyn.Tools;
 
@@ -13,6 +14,7 @@ namespace Penwyn.Game
         [Header("Masks")]
         public LayerMask TargetMask;
         public LayerMask ObstacleMask;
+        public bool DamageNonClient;
         [HorizontalLine]
 
         [Header("Damage To Damageable")]
@@ -77,7 +79,7 @@ namespace Penwyn.Game
 
         public virtual void HandleObjectCollided(GameObject collidedObject)
         {
-            if (this.gameObject.activeInHierarchy && TargetMask.Contains(collidedObject.layer))
+            if (this.gameObject.activeInHierarchy && TargetMask.Contains(collidedObject.layer) && CanDamageNonClient(collidedObject))
             {
                 DealDamage(collidedObject);
                 HandleRecoilDamage();
@@ -90,6 +92,10 @@ namespace Penwyn.Game
             }
         }
 
+        public bool CanDamageNonClient(GameObject gameObject)
+        {
+            return gameObject.GetComponent<PhotonView>() == null || gameObject.GetComponent<PhotonView>().IsMine && DamageNonClient;
+        }
 
         public virtual void OnEnable()
         {

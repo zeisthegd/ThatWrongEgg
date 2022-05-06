@@ -11,6 +11,7 @@ using Photon.Realtime;
 
 using NaughtyAttributes;
 using Penwyn.Tools;
+using System;
 
 namespace Penwyn.Game
 {
@@ -25,15 +26,26 @@ namespace Penwyn.Game
         public event UnityAction TurnChanged;
         public event UnityAction ScoreChanged;
 
+        protected MatchSettings _matchSettings;
+
+
+        protected float _timerStart = 0;
+
         public virtual void Awake()
         {
             _photonView = GetComponent<PhotonView>();
             PlayerMatchDatas();
         }
 
+        protected virtual void Update()
+        {
+            HandleRoundTimeEnded();
+        }
+
         public virtual void StartGame()
         {
             ConnectPlayerEvents();
+            _matchSettings = GameManager.Instance.MatchSettings;
         }
 
         public virtual void PlayerMatchDatas()
@@ -45,15 +57,14 @@ namespace Penwyn.Game
             }
         }
 
-        #region Egg Type Assignment
+        #region Egg Type Assignment-------------------------------------------------------------------------------------
 
         public virtual void AssignEggsType()
         {
             if (PhotonNetwork.IsMasterClient == false)
                 return;
-            int bombCount = 0;
             // Only call if player is master client.
-            PlayerManager.Instance.FindPlayersInRooms();
+            int bombCount = 0;
             for (int i = 0; i < PlayerManager.Instance.PlayerInRoom.Count; i++)
             {
                 if (PlayerManager.Instance.PlayerInRoom.Count - i == 1 && bombCount == 0)
@@ -72,33 +83,57 @@ namespace Penwyn.Game
             }
         }
 
-        [PunRPC]
-        public virtual void ChangeEggType(EggType newType)
+        #endregion
+
+        #region Timer and Time Handler-------------------------------------------------------------------------------------
+
+        public virtual void MasterRPC_StartTimer()
         {
-            PlayerManager.Instance.LocalPlayer.CharacterEggManager.Egg.RPC_ChangeType(newType);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                _photonView.RPC(nameof(StartTimer), RpcTarget.AllViaServer, PhotonNetwork.ServerTimestamp / 1000);
+            }
+        }
+
+        [PunRPC]
+        public virtual void StartTimer(int serverTime)
+        {
+            _timerStart = serverTime;
+        }
+
+        private void HandleRoundTimeEnded()
+        {
+            if (CurrentRoundTime == 0 && GameManager.Instance.IsGameStarted)
+            {
+                //Disable input.
+                InputReader.Instance.DisableGameplayInput();
+                //Explode all bomb eggs.
+                var eggs = FindObjectsOfType<Egg>();
+                for (int i = 0; i < eggs.Length; i++)
+                {
+                    if (eggs[i].Type == EggType.Bomb)
+                    {
+                        eggs[i].Explode();
+                    }
+                }
+                GameManager.Instance.RPC_LoadNextLevel();
+            }
         }
 
         #endregion
 
+        #region Egg Death-------------------------------------------------------------------------------------
 
-        public virtual void LocalPlayerDeath(Character player)
+        public virtual void LocalPlayerEggDeath()
         {
-            _photonView.RPC(nameof(PlayerDeath), RpcTarget.All, PhotonNetwork.LocalPlayer);
+            _photonView.RPC(nameof(PlayerEggDeath), RpcTarget.All, PhotonNetwork.LocalPlayer);
         }
 
         [PunRPC]
-        public virtual void PlayerDeath(Player player)
+        public virtual void PlayerEggDeath(Player player)
         {
-            HandleAllTeamMemberDeath();
+            Debug.Log(player.NickName);
             ScoreChanged?.Invoke();
-        }
-
-        protected virtual void HandleAllTeamMemberDeath()
-        {
-            for (int i = 0; i < 4; i++)
-            {
-
-            }
         }
 
         public virtual void ResetDeathCount()
@@ -109,24 +144,18 @@ namespace Penwyn.Game
             }
         }
 
-        public virtual bool IsSameTeam(Player player)
-        {
-            if (player.GetPhotonTeam() == PhotonNetwork.LocalPlayer.GetPhotonTeam())
-                return true;
-            return false;
-        }
-
+        #endregion
 
         public virtual void ConnectPlayerEvents()
         {
-            PlayerManager.Instance.LocalPlayer.Health.OnDeath += LocalPlayerDeath;
+            PlayerManager.Instance.LocalPlayer.CharacterEggManager.Egg.Health.OnDeath += LocalPlayerEggDeath;
         }
 
         public virtual void DisconnectEvents()
         {
             if (PlayerManager.Instance != null && PlayerManager.Instance.LocalPlayer != null)
             {
-                PlayerManager.Instance.LocalPlayer.Health.OnDeath -= LocalPlayerDeath;
+                PlayerManager.Instance.LocalPlayer.CharacterEggManager.Egg.Health.OnDeath -= LocalPlayerEggDeath;
             }
         }
 
@@ -136,7 +165,19 @@ namespace Penwyn.Game
         }
 
         public List<PlayerMatchData> PlayerMatchDataList => _playerMatchDataList;
-
+        /// <summary>
+        /// Round time - Elapsed time.
+        /// </summary>
+        public int CurrentRoundTime
+        {
+            get
+            {
+                if (GameManager.Instance.IsGameStarted)
+                    return (int)(_matchSettings.RoundTime - (PhotonNetwork.ServerTimestamp / 1000 - _timerStart));
+                else
+                    return 0;
+            }
+        }
     }
 
     public enum Turn

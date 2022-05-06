@@ -81,11 +81,13 @@ namespace Penwyn.Game
             InputReader.Instance.DisableGameplayInput();
             CombatManager.StartGame();
             LevelManager.LoadLevelByIndex(0);
+            PlayerManager.Instance.FindPlayersInRooms();
 
             yield return new WaitForSeconds(MatchSettings.LevelLoadTime + MatchSettings.PlayerPositioningTime);
 
             InputReader.Instance.EnableGameplayInput();
             CombatManager.AssignEggsType();
+            CombatManager.MasterRPC_StartTimer();
 
             _gameState = GameState.Started;
         }
@@ -109,6 +111,7 @@ namespace Penwyn.Game
             CombatManager.ResetDeathCount();
             InputReader.Instance.EnableGameplayInput();
             CombatManager.AssignEggsType();
+            CombatManager.MasterRPC_StartTimer();
 
             _gameState = GameState.Started;
         }
@@ -142,6 +145,7 @@ namespace Penwyn.Game
         }
 
         public GameState State => _gameState;
+        public bool IsGameStarted => State == GameState.Started;
 
     }
 

@@ -10,6 +10,8 @@ namespace Penwyn.Game
     {
         public float LevelLoadTime = 1;
         public float PlayerPositioningTime = 1;
+
+        public int RoundTime = 30;
     }
 }
 
