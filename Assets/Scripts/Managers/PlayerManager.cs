@@ -38,23 +38,9 @@ namespace Penwyn.Game
                 LocalPlayer = player.FindComponent<Character>();
                 PlayerSpawned?.Invoke();
                 Debug.Log("Player Created!");
-                TryJoiningATeam();
+                LocalPlayer.CharacterEggManager.CreateNetworkedEgg();
             }
             FindPlayersInRooms();
-        }
-
-        public virtual void TryJoiningATeam()
-        {
-            foreach (TeamData team in CombatManager.Instance.Teams)
-            {
-                Debug.Log(team.Team.Name);
-                if (team.Players == null || team.Players.Length == 0)
-                {
-                    PhotonNetwork.LocalPlayer.JoinTeam(team.Team);
-                    Debug.Log($"Joined: {team.Team.Name}");
-                    return;
-                }
-            }
         }
 
         public void FindPlayersInRooms()

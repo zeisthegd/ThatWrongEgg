@@ -16,6 +16,9 @@ namespace Penwyn.Game
     public class CharacterController : MonoBehaviour
     {
         [Expandable] public PhysicsSettings Settings;
+
+        [Header("Feedbacks")]
+        public ParticleSystem Dust;
         protected Rigidbody _body;
         protected Collider _collider;
 
@@ -30,10 +33,7 @@ namespace Penwyn.Game
         [HorizontalLine(1, EColor.Green)]
         [ReadOnly] public bool IsTouchingGround;
         [ReadOnly] public bool IsTouchingWall;
-
-
-
-
+        
         void Awake()
         {
             _body = GetComponent<Rigidbody>();
@@ -44,6 +44,7 @@ namespace Penwyn.Game
         void Update()
         {
             ExternalForce = Vector3.Lerp(ExternalForce, Vector3.zero, ExternalForceDepleteRate * Time.deltaTime);
+            DustHandling();
         }
 
         public virtual void AddForce(Vector3 force, ForceMode mode = ForceMode.Force)
@@ -71,6 +72,23 @@ namespace Penwyn.Game
         {
             _body.velocity = newVelocity + ExternalForce;
         }
+
+        protected virtual void DustHandling()
+        {
+            if (Dust != null)
+            {
+                if (Velocity.magnitude > 0)
+                {
+                    if (!Dust.isPlaying)
+                        Dust.Play();
+                }
+                else
+                {
+                    Dust.Stop();
+                }
+            }
+        }
+
 
         #region Physics Check
 

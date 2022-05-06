@@ -29,17 +29,7 @@ namespace Penwyn.Game
         public CombatManager CombatManager;
         public LevelManager LevelManager;
 
-        [Header("Utilities")]
-        public CursorUtility CursorUtility;
-
-        //[SerializeField] AudioPlayer audioPlayer;
-
-        [Header("Level Stuff")]
-        //[SerializeField] Level levelPref;
-        public string LevelPath;
         [Expandable] public MatchSettings MatchSettings;
-
-        //   Level currentLevel;
 
         public static GameManager Instance;
         public event UnityAction GameStarted;
@@ -87,12 +77,16 @@ namespace Penwyn.Game
         public IEnumerator StartGameCoroutine()
         {
             _gameState = GameState.LevelLoading;
+
             InputReader.Instance.DisableGameplayInput();
             CombatManager.StartGame();
             LevelManager.LoadLevelByIndex(0);
+
             yield return new WaitForSeconds(MatchSettings.LevelLoadTime + MatchSettings.PlayerPositioningTime);
+
             InputReader.Instance.EnableGameplayInput();
-            PlayerManager.Instance.LocalPlayer.CharacterEggManager.CreateNetworkedEgg();
+            CombatManager.AssignEggsType();
+
             _gameState = GameState.Started;
         }
 
@@ -103,15 +97,19 @@ namespace Penwyn.Game
         public IEnumerator LoadNextLevelCoroutine()
         {
             _gameState = GameState.LevelLoading;
+
             yield return new WaitForSeconds(MatchSettings.LevelLoadTime + MatchSettings.PlayerPositioningTime);
 
             InputReader.Instance.DisableGameplayInput();
-            PlayerManager.LocalPlayer.Health.Reset();
-
+            PlayerManager.LocalPlayer.Health.Reset();//TODO change to revive eggs.
             LevelManager.LoadNextLevel();
+
             yield return new WaitForSeconds(MatchSettings.LevelLoadTime + MatchSettings.PlayerPositioningTime);
+
             CombatManager.ResetDeathCount();
             InputReader.Instance.EnableGameplayInput();
+            CombatManager.AssignEggsType();
+
             _gameState = GameState.Started;
         }
 

@@ -106,8 +106,7 @@ namespace Penwyn.Game
         protected virtual void MoveLocalPlayerIntoPosition()
         {
             GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawn");
-            Player[] teamMembers = CombatManager.Instance.Teams[PhotonNetwork.LocalPlayer.GetPhotonTeam().Code].Players;
-            PlayerManager.Instance.LocalPlayer.transform.DOMove(spawns[Array.IndexOf(teamMembers, PhotonNetwork.LocalPlayer)].transform.position, 1);
+            PlayerManager.Instance.LocalPlayer.transform.DOMove(spawns[Array.IndexOf(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer)].transform.position, 1);
         }
     }
 }

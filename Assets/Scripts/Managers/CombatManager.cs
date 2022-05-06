@@ -20,7 +20,7 @@ namespace Penwyn.Game
         protected PhotonView _photonView;
 
 
-        protected List<TeamData> _teams = new List<TeamData>();
+        protected List<PlayerMatchData> _playerMatchDataList = new List<PlayerMatchData>();
 
         public event UnityAction TurnChanged;
         public event UnityAction ScoreChanged;
@@ -28,33 +28,58 @@ namespace Penwyn.Game
         public virtual void Awake()
         {
             _photonView = GetComponent<PhotonView>();
-            InitTeams();
+            PlayerMatchDatas();
         }
 
         public virtual void StartGame()
         {
-            GetTeams();
             ConnectPlayerEvents();
         }
 
-        public virtual void InitTeams()
+        public virtual void PlayerMatchDatas()
         {
-            _teams = new List<TeamData>();
+            _playerMatchDataList = new List<PlayerMatchData>();
             for (int i = 0; i < 4; i++)
             {
-                _teams.Add(new TeamData());
+                _playerMatchDataList.Add(new PlayerMatchData());
             }
-            GetTeams();
         }
 
-        public virtual void GetTeams()
+        #region Egg Type Assignment
+
+        public virtual void AssignEggsType()
         {
-            for (int i = 0; i < 4; i++)
+            if (PhotonNetwork.IsMasterClient == false)
+                return;
+            int bombCount = 0;
+            // Only call if player is master client.
+            PlayerManager.Instance.FindPlayersInRooms();
+            for (int i = 0; i < PlayerManager.Instance.PlayerInRoom.Count; i++)
             {
-                PhotonTeamsManager.Instance.TryGetTeamByCode((byte)i, out _teams[i].Team);
-                PhotonTeamsManager.Instance.TryGetTeamMembers((byte)i, out _teams[i].Players);
+                if (PlayerManager.Instance.PlayerInRoom.Count - i == 1 && bombCount == 0)
+                {
+                    PlayerManager.Instance.PlayerInRoom[i].CharacterEggManager.Egg.RPC_ChangeType(EggType.Bomb);
+                    bombCount++;
+                }
+                else
+                {
+                    EggType type = Randomizer.RandomBetween(0, 1) == 0 ? EggType.Normal : EggType.Bomb;
+                    PlayerManager.Instance.PlayerInRoom[i].CharacterEggManager.Egg.RPC_ChangeType(type);
+                    if (type == EggType.Bomb)
+                        bombCount++;
+
+                }
             }
         }
+
+        [PunRPC]
+        public virtual void ChangeEggType(EggType newType)
+        {
+            PlayerManager.Instance.LocalPlayer.CharacterEggManager.Egg.RPC_ChangeType(newType);
+        }
+
+        #endregion
+
 
         public virtual void LocalPlayerDeath(Character player)
         {
@@ -72,17 +97,15 @@ namespace Penwyn.Game
         {
             for (int i = 0; i < 4; i++)
             {
-                if (_teams[i].CurrentDeath == _teams[i].Players.Length)
-                    GameManager.Instance.LoadNextLevel();
 
             }
         }
 
         public virtual void ResetDeathCount()
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < _playerMatchDataList.Count; i++)
             {
-                _teams[i].CurrentDeath = 0;
+                _playerMatchDataList[i].EggDestroyed = false;
             }
         }
 
@@ -112,7 +135,7 @@ namespace Penwyn.Game
             DisconnectEvents();
         }
 
-        public List<TeamData> Teams => _teams;
+        public List<PlayerMatchData> PlayerMatchDataList => _playerMatchDataList;
 
     }
 

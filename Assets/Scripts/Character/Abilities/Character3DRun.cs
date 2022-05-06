@@ -8,15 +8,14 @@ namespace Penwyn.Game
 {
     public class Character3DRun : CharacterAbility
     {
-        [Header("Speed")]
+        [Header("Speeds")]
         public float RunSpeed = 5;
-        public float MaxSpeed = 30;
-        public float OppositeDirectionPower = 2;
         public float AirSpeed = 5;
+
+        [Header("Raw or Accelerate")]
         public bool UseRawInput = true;
+        public float OppositeDirectionPower = 2;
         public ControlType Type;
-        [Header("Feedbacks")]
-        public ParticleSystem Dust;
 
         public override void AwakeAbility(Character character)
         {
@@ -45,7 +44,6 @@ namespace Penwyn.Game
                     AirStrafe();
                 }
             }
-            DustHandling();
         }
 
         public virtual void RunRaw(Vector2 input)
@@ -84,24 +82,6 @@ namespace Penwyn.Game
                 Debug.DrawRay(_character.transform.position, direction * 1000, Color.green);
                 if (-direction != Vector3.zero)
                     _character.transform.forward = direction;
-            }
-        }
-
-
-
-        protected virtual void DustHandling()
-        {
-            if (Dust != null)
-            {
-                if (_controller.Velocity.magnitude > 0)
-                {
-                    if (!Dust.isPlaying)
-                        Dust.Play();
-                }
-                else
-                {
-                    Dust.Stop();
-                }
             }
         }
 

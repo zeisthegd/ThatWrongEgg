@@ -32,7 +32,7 @@ namespace Penwyn.UI
 
         void Awake()
         {
-            PhotonTeamsManager.PlayerJoinedTeam += ShowTeams;
+            //PhotonTeamsManager.PlayerJoinedTeam += ShowTeams;
             CombatManager.Instance.ScoreChanged += ShowScore;
         }
 
@@ -67,24 +67,24 @@ namespace Penwyn.UI
 
         public virtual void ShowTeams(Photon.Realtime.Player player, PhotonTeam teamJoined)
         {
-            for (int i = 0; i < CombatManager.Instance.Teams.Count; i++)
-            {
-                if (CombatManager.Instance.Teams[i].Players != null && CombatManager.Instance.Teams[i].Players.Length > 0)
-                {
-                    Debug.Log($"{i}|{CombatManager.Instance.Teams[i].Team.Name}|{CombatManager.Instance.Teams[i].Players[0].NickName}");
-                    PlayerNames[i].SetText(CombatManager.Instance.Teams[i].Players[0].NickName + "");
-                }
-            }
+            // for (int i = 0; i < CombatManager.Instance.Teams.Count; i++)
+            // {
+            //     if (CombatManager.Instance.Teams[i].Players != null && CombatManager.Instance.Teams[i].Players.Length > 0)
+            //     {
+            //         Debug.Log($"{i}|{CombatManager.Instance.Teams[i].Team.Name}|{CombatManager.Instance.Teams[i].Players[0].NickName}");
+            //         PlayerNames[i].SetText(CombatManager.Instance.Teams[i].Players[0].NickName + "");
+            //     }
+            // }
             Debug.Log("Showed teams!");
         }
 
         public virtual void ShowScore()
         {
-            for (int i = 0; i < CombatManager.Instance.Teams.Count; i++)
-            {
-                if (CombatManager.Instance.Teams[i].Players != null)
-                    PlayerScores[i].SetText(CombatManager.Instance.Teams[i].Score + "");
-            }
+            // for (int i = 0; i < CombatManager.Instance.Teams.Count; i++)
+            // {
+            //     if (CombatManager.Instance.Teams[i].Players != null)
+            //         PlayerScores[i].SetText(CombatManager.Instance.Teams[i].Score + "");
+            // }
             Debug.Log("Showed scores!");
         }
 

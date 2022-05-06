@@ -13,14 +13,18 @@ namespace Penwyn.Game
     public class CharacterEggManager : CharacterAbility
     {
         public string EggPath;
+        public Material NormalSkinMaterial;
+        public Material BombSkinMaterial;
+
         public Vector3 SpawnOffset = new Vector3(0, 1, 0);
 
-        [SerializeField][ReadOnly] protected Egg _egg;
+        [ReadOnly] public Egg Egg;
 
         public virtual void CreateNetworkedEgg()
         {
-            _egg = PhotonNetwork.Instantiate(EggPath, _character.transform.position + _character.transform.forward + SpawnOffset, Quaternion.identity).GetComponent<Egg>();
+            Egg = PhotonNetwork.Instantiate(EggPath, _character.transform.position + _character.transform.forward + SpawnOffset, Quaternion.identity).GetComponent<Egg>();
         }
+
 
         public virtual void EnableEgg()
         {

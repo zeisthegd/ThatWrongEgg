@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BGMSource: {fileID: 1205068068}
-  settings: {fileID: 11400000, guid: ad97df7b7374742448a33ab93e38b16c, type: 2}
+  settings: {fileID: 11400000, guid: 44e20998448ede94f81f4ddc24897913, type: 2}
   BGMClips: []
 --- !u!82 &1205068068
 AudioSource:
@@ -208,7 +208,6 @@ GameObject:
   - component: {fileID: 1968772356}
   - component: {fileID: 2049655608}
   - component: {fileID: 2049655616}
-  - component: {fileID: 2049655617}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -360,25 +359,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f89ff930b130b49b74e609ad020cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2049655617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3950279870636821484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8701526de72d8774fa165e66daf050ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  listFoldIsOpen: 1
-  teamsList:
-  - Name: Blue
-    Code: 0
-  - Name: Red
-    Code: 1
-  - Name: Orange
-    Code: 2
-  - Name: Purple
-    Code: 3
