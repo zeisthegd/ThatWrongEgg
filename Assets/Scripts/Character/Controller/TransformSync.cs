@@ -9,7 +9,9 @@ namespace Penwyn.Game
     public class TransformSync : MonoBehaviourPun, IPunObservable
     {
         public float DistanceToTeleport = 5;
-        public AnimationCurve VelocityMagnitudeToLerpSpeedCurve;
+        public bool UpdatePosition = true;
+        public float PositionSmoothDampTime = 0.1F;
+        public float RotationSmoothDampTime = 0.1F;
 
         protected Vector3 _remotePosition;
         protected Vector3 _remoteVelocity;
@@ -21,17 +23,27 @@ namespace Penwyn.Game
         protected float _rotationLerpSpeed;
         protected CharacterController _controller;
 
+        protected Vector3 _refVelocity = Vector3.zero;
+        protected Vector3 _refRotationVelocity = Vector3.zero;
+
         void Awake()
         {
             _controller = GetComponent<CharacterController>();
         }
 
+
         void Update()
         {
             if (!photonView.IsMine)
             {
-                _controller.SetPosition(Vector3.Lerp(transform.position, _remotePosition, _positionLerpSpeed * Time.unscaledDeltaTime));
-                transform.rotation = Quaternion.Lerp(transform.rotation, _remoteRotation, _rotationLerpSpeed * Time.unscaledDeltaTime);
+                // Smooth damp the current transform and the remote transform.
+                if (UpdatePosition)
+                {
+                    _controller.SetPosition(Vector3.SmoothDamp(_controller.transform.position, _remotePosition, ref _refVelocity, PositionSmoothDampTime));
+
+                    Vector3 angle = Vector3.SmoothDamp(transform.eulerAngles, _remoteEulerAngle, ref _refRotationVelocity, RotationSmoothDampTime);
+                    _controller.transform.rotation = Quaternion.Euler(angle);
+                }
             }
         }
 
@@ -51,16 +63,9 @@ namespace Penwyn.Game
                 _remoteVelocity = (Vector3)stream.ReceiveNext();
                 _remoteRotation = (Quaternion)stream.ReceiveNext();
                 _remoteEulerAngle = (Vector3)stream.ReceiveNext();
-
                 _remoteVelocityMagnitude = _remoteVelocity.magnitude;
 
-                float velocityDifference = Mathf.Abs(_remoteVelocityMagnitude - _controller.Velocity.magnitude);
-                float angleDifference = Vector3.Angle(_remoteEulerAngle, _controller.transform.eulerAngles);
-
-                _positionLerpSpeed = VelocityMagnitudeToLerpSpeedCurve.Evaluate(velocityDifference);
-                _rotationLerpSpeed = VelocityMagnitudeToLerpSpeedCurve.Evaluate(Mathf.Abs(angleDifference));
-
-                if (Vector3.Distance(transform.position, _remotePosition) > _positionLerpSpeed)
+                if (Vector3.Distance(transform.position, _remotePosition) > DistanceToTeleport)
                 {
                     transform.position = _remotePosition;
                 }

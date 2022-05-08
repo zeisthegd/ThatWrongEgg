@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Photon;
+using Photon.Pun;
 using NaughtyAttributes;
 using TMPro;
 
@@ -17,6 +19,7 @@ namespace Penwyn.UI
         public Button ItemButton;
         [Header("Match")]
         public TMP_Text TimerTxt;
+        public TMP_Text PingTxt;
 
 
         protected Character _localPlayer;
@@ -31,6 +34,7 @@ namespace Penwyn.UI
         public virtual void Update()
         {
             TimerTxt.SetText(CombatManager.Instance.CurrentRoundTime + "");
+            PingTxt.SetText(PhotonNetwork.GetPing() + "");
         }
 
 

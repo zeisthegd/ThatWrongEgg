@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Penwyn.Tools;
+using System;
 
 namespace Penwyn.Game
 {
@@ -15,7 +16,10 @@ namespace Penwyn.Game
         [Header("Raw or Accelerate")]
         public bool UseRawInput = true;
         public float OppositeDirectionPower = 2;
-        public ControlType Type;
+        [Header("Rotation")]
+        public RotateType RotateType = RotateType.MoveInput;
+        public float TurnSmoothTime = 0.25F;
+        public ControlType ControlType;
 
         public override void AwakeAbility(Character character)
         {
@@ -28,9 +32,10 @@ namespace Penwyn.Game
             Rotate();
         }
 
+
         public override void FixedUpdateAbility()
         {
-            if (Type == ControlType.PlayerInput && AbilityAuthorized)
+            if (ControlType == ControlType.PlayerInput && AbilityAuthorized)
             {
                 if (_controller.IsTouchingGround)
                 {
@@ -38,6 +43,7 @@ namespace Penwyn.Game
                         RunRaw(InputReader.Instance.MoveInput.normalized);
                     else
                         RunAccelerate(InputReader.Instance.MoveInput.normalized);
+                    Debug.Log(_controller.Velocity.magnitude);
                 }
                 else
                 {
@@ -72,7 +78,33 @@ namespace Penwyn.Game
             }
         }
 
-        public virtual void Rotate()
+        private void Rotate()
+        {
+            if (RotateType == RotateType.MoveInput)
+                RotateByMoveInput();
+            else
+                RotateByMouse();
+        }
+
+
+        public virtual void RotateByMoveInput()
+        {
+            if (AbilityAuthorized)
+            {
+                if (InputReader.Instance.MoveInput.magnitude > 0.01f)
+                {
+                    float turnSmoothVelocity = 0;
+                    Vector2 direction = InputReader.Instance.MoveInput;
+                    float targetAngle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
+                    float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, TurnSmoothTime);
+
+                    _character.transform.rotation = Quaternion.Euler(0, angle, 0);
+                }
+            }
+        }
+
+
+        public virtual void RotateByMouse()
         {
             if (AbilityAuthorized)
             {
@@ -100,11 +132,17 @@ namespace Penwyn.Game
             base.OnDisable();
         }
 
-        public enum ControlType
-        {
-            PlayerInput,
-            Script
-        }
+
+    }
+    public enum ControlType
+    {
+        PlayerInput,
+        Script
     }
 
+    public enum RotateType
+    {
+        Mouse,
+        MoveInput
+    }
 }

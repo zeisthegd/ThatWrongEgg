@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 3320821569864509605}
   - component: {fileID: 9222465422020722902}
   - component: {fileID: 4605955441697750390}
+  - component: {fileID: 3969784157335415802}
   m_Layer: 6
   m_Name: Chicken
   m_TagString: Player
@@ -139,7 +140,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3320821569864509613}
-  m_Material: {fileID: 13400000, guid: 6a3dadb544955234d9757990ecf3206a, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.2160645
@@ -161,6 +162,7 @@ MonoBehaviour:
   Settings: {fileID: 11400000, guid: f2bfad828cb4bc64daa47ae579d059f4, type: 2}
   Dust: {fileID: 1705490330192427270}
   ExternalForce: {x: 0, y: 0, z: 0}
+  ApplyExForceOnUpdate: 0
   ExternalForceDepleteRate: 1
   IsTouchingGround: 0
   IsTouchingWall: 0
@@ -200,30 +202,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DistanceToTeleport: 5
-  VelocityMagnitudeToLerpSpeedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 5
-      inSlope: 0.375
-      outSlope: 0.375
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 40
-      value: 20
-      inSlope: 0.375
-      outSlope: 0.375
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  UpdatePosition: 1
+  PositionSmoothDampTime: 0.1
+  RotationSmoothDampTime: 0.1
+--- !u!114 &3969784157335415802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3320821569864509613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d3ccc143576c445a61e472ca6e7d04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinRemoteKickedDistance: 1
 --- !u!1 &3320821570543588154
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,13 +267,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AbilityPermitted: 1
   Name: 
-  ForbidPermissionForbidCharacterStates: 
+  ForbidPermissionCharacterStates: 
   ForbidPermissionControllerStates: 
   RunSpeed: 200
   AirSpeed: 10
   UseRawInput: 1
   OppositeDirectionPower: 3
-  Type: 0
+  RotateType: 1
+  TurnSmoothTime: 0.025
+  ControlType: 0
 --- !u!114 &3320821570543588158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AbilityPermitted: 1
   Name: 
-  ForbidPermissionForbidCharacterStates: 
+  ForbidPermissionCharacterStates: 
   ForbidPermissionControllerStates: 
   MaxJumpForce: 3
   ReleaseEarlyForce: 6
@@ -312,10 +308,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AbilityPermitted: 1
   Name: 
-  ForbidPermissionForbidCharacterStates: 
+  ForbidPermissionCharacterStates: 
   ForbidPermissionControllerStates: 
   KickForce: 10
   KickRange: 1.5
+  KickAngle: 180
   TargetMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -337,7 +334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AbilityPermitted: 1
   Name: 
-  ForbidPermissionForbidCharacterStates: 
+  ForbidPermissionCharacterStates: 
   ForbidPermissionControllerStates: 
   EggPath: Prefabs/Character/Player/Egg/Egg
   NormalSkinMaterial: {fileID: 2100000, guid: e22e52b5d302f8f46866420dd9216dec, type: 2}

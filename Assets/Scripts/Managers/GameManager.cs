@@ -133,6 +133,7 @@ namespace Penwyn.Game
         public virtual void OnRoomSceneLoaded()
         {
             PlayerManager.CreateLocalPlayer();
+            InputReader.Instance.EnableGameplayInput();
             _gameState = GameState.TeamChoosing;
         }
 

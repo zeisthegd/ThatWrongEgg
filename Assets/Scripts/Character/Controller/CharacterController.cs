@@ -25,6 +25,7 @@ namespace Penwyn.Game
         private StateMachine<ControllerState> _states;
 
         public Vector3 ExternalForce;
+        public bool ApplyExForceOnUpdate = false;
         public float ExternalForceDepleteRate = 1;
 
         public event UnityAction GroundTouched;
@@ -33,7 +34,7 @@ namespace Penwyn.Game
         [HorizontalLine(1, EColor.Green)]
         [ReadOnly] public bool IsTouchingGround;
         [ReadOnly] public bool IsTouchingWall;
-        
+
         void Awake()
         {
             _body = GetComponent<Rigidbody>();
@@ -46,6 +47,13 @@ namespace Penwyn.Game
             ExternalForce = Vector3.Lerp(ExternalForce, Vector3.zero, ExternalForceDepleteRate * Time.deltaTime);
             DustHandling();
         }
+
+        void FixedUpdate()
+        {
+            if (ApplyExForceOnUpdate)
+                AddForce(ExternalForce * Time.deltaTime);
+        }
+
 
         public virtual void AddForce(Vector3 force, ForceMode mode = ForceMode.Force)
         {

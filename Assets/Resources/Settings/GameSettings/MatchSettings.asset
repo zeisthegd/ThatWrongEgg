@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelLoadTime: 1
   PlayerPositioningTime: 1
-  RoundTime: 30
+  RoundTime: 100

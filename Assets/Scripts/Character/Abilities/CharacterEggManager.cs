@@ -25,11 +25,5 @@ namespace Penwyn.Game
         {
             Egg = PhotonNetwork.Instantiate(EggPath, _character.transform.position + _character.transform.forward + SpawnOffset, Quaternion.identity).GetComponent<Egg>();
         }
-
-
-        public virtual void EnableEgg()
-        {
-
-        }
     }
 }

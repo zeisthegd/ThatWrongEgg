@@ -23,7 +23,7 @@ namespace Penwyn.Game
         /// </summary>
         public virtual void RPC_GetKicked(Vector3 force, Vector3 kickedPosition)
         {
-            photonView.RPC(nameof(GetKicked), RpcTarget.AllViaServer, new object[] { force, kickedPosition });
+            photonView.RPC(nameof(GetKicked), RpcTarget.All, new object[] { force, kickedPosition });
         }
 
         /// <summary>

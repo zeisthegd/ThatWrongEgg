@@ -9,7 +9,7 @@ namespace Penwyn.Game
         public bool AbilityPermitted = true;
         public string Name;
 
-        public List<CharacterAbilityStates> ForbidPermissionForbidCharacterStates;
+        public List<CharacterAbilityStates> ForbidPermissionCharacterStates;
         public List<ControllerState> ForbidPermissionControllerStates;
 
         protected Character _character;
@@ -49,7 +49,7 @@ namespace Penwyn.Game
         {
             get
             {
-                foreach (CharacterAbilityStates state in ForbidPermissionForbidCharacterStates)
+                foreach (CharacterAbilityStates state in ForbidPermissionCharacterStates)
                 {
                     if (_character.States.CurrentState == state)
                         return false;

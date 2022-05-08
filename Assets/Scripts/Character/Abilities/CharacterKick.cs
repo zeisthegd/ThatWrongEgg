@@ -10,23 +10,28 @@ namespace Penwyn.Game
     {
         public float KickForce = 10;
         public float KickRange = 2;
+        public float KickAngle = 180;//Max angle in front of the character.
         public LayerMask TargetMask;
         public LayerMask ObstacleMask;
 
         public KickableObject Target;
 
-        protected List<Transform> _targetList;
+        protected List<KickableObject> _targetList;
 
+        public override void AwakeAbility(Character character)
+        {
+            base.AwakeAbility(character);
+            _targetList = new List<KickableObject>();
+        }
 
         public virtual void Kick()
         {
             if (AbilityAuthorized)
             {
                 FindTargetInRange();
-                if (Target != null)
+                foreach (KickableObject kickableObject in _targetList)
                 {
-                    Target.RPC_GetKicked(KickForce * (Target.transform.position - _character.Position).normalized, _character.Position);
-                    Target = null;
+                    kickableObject.RPC_GetKicked(KickForce * (kickableObject.transform.position - _character.Position).normalized, _character.Position);
                 }
             }
         }
@@ -34,18 +39,19 @@ namespace Penwyn.Game
         public void FindTargetInRange()
         {
             var _detectedColliders = Physics.OverlapSphere(_character.Position, KickRange, TargetMask);
-            _targetList = new List<Transform>();
+            _targetList.Clear();
             foreach (Collider collider in _detectedColliders)
             {
                 if (!Physics.Raycast(_character.Position, collider.transform.position - _character.Position, Vector3.Distance(collider.transform.position, _character.Position), ObstacleMask))
                 {
-                    _targetList.Add(collider.transform);
+                    float angleToTarget = Vector3.SignedAngle(_character.transform.forward, collider.transform.position - _character.transform.position, Vector3.up);
+                    if (collider.GetComponent<KickableObject>() && angleToTarget >= -90 && angleToTarget <= 90)
+                        _targetList.Add(collider.GetComponent<KickableObject>());
                 }
             }
             if (_targetList.Count > 0)
             {
                 _targetList = _targetList.OrderBy(x => Vector3.Distance(x.transform.position, _character.Position)).ToList();
-                Target = _targetList[0].GetComponent<KickableObject>();
             }
         }
 
@@ -72,7 +78,7 @@ namespace Penwyn.Game
             if (_character)
             {
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawSphere(_character.Position, KickRange);
+                Gizmos.DrawWireSphere(_character.Position, KickRange);
             }
         }
     }
