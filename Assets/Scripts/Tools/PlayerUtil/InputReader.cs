@@ -15,6 +15,7 @@ namespace Penwyn.Tools
 
         //Movement
         public event UnityAction<Vector2> Move;
+        public event UnityAction<float> MouseScroll;
 
         //Skills Using
         public event UnityAction KickPressed;
@@ -131,6 +132,17 @@ namespace Penwyn.Tools
 
         }
 
+        public void OnRotateBlock(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                ScrollInput = context.ReadValue<Vector2>();
+                MouseScroll?.Invoke(ScrollInput.y);
+            }
+            else
+                ScrollInput = Vector2.zero;
+        }
+
         public void EnableGameplayInput()
         {
             playerinput.Gameplay.Enable();
@@ -148,6 +160,9 @@ namespace Penwyn.Tools
             DisableGameplayInput();
         }
 
+
+
         public Vector2 MoveInput { get; set; }
+        public Vector2 ScrollInput { get; set; }
     }
 }

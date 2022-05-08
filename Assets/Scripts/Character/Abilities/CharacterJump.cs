@@ -15,7 +15,6 @@ namespace Penwyn.Game
             if (AbilityAuthorized && _controller.IsTouchingGround)
             {
                 _controller.AddForce(Vector3.up * MaxJumpForce, ForceMode.VelocityChange);
-                _controller.AddForce(Camera.main.transform.forward, ForceMode.VelocityChange);
             }
         }
 

@@ -15,14 +15,14 @@ MonoBehaviour:
   LevelName: 1
   BlockMap:
   - BlockID: FirstTeamSpawn
-    Position: {x: -3.5, y: 0.6, z: 3.5}
+    Position: {x: -5.5, y: 0.6, z: 5.5}
     RotationAngleY: 0
   - BlockID: FirstTeamSpawn
-    Position: {x: 3.5, y: 0.6, z: -3.5}
+    Position: {x: 5.5, y: 0.6, z: 5.5}
     RotationAngleY: 0
-  - BlockID: SecondTeamSpawn
-    Position: {x: 3.5, y: 0.6, z: 3.5}
+  - BlockID: FirstTeamSpawn
+    Position: {x: 5.5, y: 0.6, z: -1.5}
     RotationAngleY: 0
-  - BlockID: SecondTeamSpawn
-    Position: {x: -3.5, y: 0.6, z: -3.5}
+  - BlockID: FirstTeamSpawn
+    Position: {x: -5.5, y: 0.6, z: -1.5}
     RotationAngleY: 0

@@ -80,6 +80,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateBlock"",
+                    ""type"": ""Value"",
+                    ""id"": ""165ad3a7-3585-474a-a23b-57055c8e797c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -324,6 +333,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""ChangeCursorVisibility"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3992087-7d41-47be-976f-447df31b57fe"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateBlock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -338,6 +358,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_ChangeCursorVisibility = m_Gameplay.FindAction("ChangeCursorVisibility", throwIfNotFound: true);
+        m_Gameplay_RotateBlock = m_Gameplay.FindAction("RotateBlock", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -403,6 +424,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Look;
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_ChangeCursorVisibility;
+    private readonly InputAction m_Gameplay_RotateBlock;
     public struct GameplayActions
     {
         private @PlayerInput m_Wrapper;
@@ -413,6 +435,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Gameplay_Look;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @ChangeCursorVisibility => m_Wrapper.m_Gameplay_ChangeCursorVisibility;
+        public InputAction @RotateBlock => m_Wrapper.m_Gameplay_RotateBlock;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -440,6 +463,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ChangeCursorVisibility.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnChangeCursorVisibility;
                 @ChangeCursorVisibility.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnChangeCursorVisibility;
                 @ChangeCursorVisibility.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnChangeCursorVisibility;
+                @RotateBlock.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRotateBlock;
+                @RotateBlock.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRotateBlock;
+                @RotateBlock.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRotateBlock;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -462,6 +488,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ChangeCursorVisibility.started += instance.OnChangeCursorVisibility;
                 @ChangeCursorVisibility.performed += instance.OnChangeCursorVisibility;
                 @ChangeCursorVisibility.canceled += instance.OnChangeCursorVisibility;
+                @RotateBlock.started += instance.OnRotateBlock;
+                @RotateBlock.performed += instance.OnRotateBlock;
+                @RotateBlock.canceled += instance.OnRotateBlock;
             }
         }
     }
@@ -474,5 +503,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnChangeCursorVisibility(InputAction.CallbackContext context);
+        void OnRotateBlock(InputAction.CallbackContext context);
     }
 }

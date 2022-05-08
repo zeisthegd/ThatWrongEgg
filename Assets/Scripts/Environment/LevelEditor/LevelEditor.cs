@@ -21,6 +21,8 @@ namespace Penwyn.LevelEditor
         public int TileScale = 1;
         public Vector3 SpawnOffset;
 
+        [Header("Block Movement")]
+        public float RotateSpeed = 5;
 
         [Header("Blocks List")]
         public List<LevelBlock> PlaceableObjects;
@@ -51,6 +53,7 @@ namespace Penwyn.LevelEditor
             if (CurrentlySelectedBlock != null)
             {
                 CurrentlySelectedBlock.transform.position = IndexToGridPosition((int)_mouseIndFromPos.x, (int)_mouseIndFromPos.z);
+                CurrentlySelectedBlock.transform.position += SpawnOffset;
             }
         }
 
@@ -75,6 +78,17 @@ namespace Penwyn.LevelEditor
             {
                 PlacedBlocks.Add(Instantiate(CurrentlySelectedBlock, CurrentlySelectedBlock.transform.position + SpawnOffset, CurrentlySelectedBlock.transform.rotation));
                 Debug.Log($"Placed {CurrentlySelectedBlock.BlockID}");
+            }
+        }
+
+        /// <summary>
+        /// Place the current block on the grid, add to the placed blocks list.
+        /// </summary>
+        public virtual void RotateCurentBlock(float delta)
+        {
+            if (CurrentlySelectedBlock != null && PositionInsideGrid(CurrentlySelectedBlock.transform.position))
+            {
+                CurrentlySelectedBlock.transform.eulerAngles += Vector3.up * (delta * RotateSpeed * Time.deltaTime);
             }
         }
 
@@ -238,6 +252,7 @@ namespace Penwyn.LevelEditor
             if (InputReader.Instance != null)
             {
                 InputReader.Instance.KickPressed += PlaceCurentBlock;
+                InputReader.Instance.MouseScroll += RotateCurentBlock;
                 InputReader.Instance.ItemPressed += DeleteBlockUnderMouse;
             }
             else
@@ -251,6 +266,7 @@ namespace Penwyn.LevelEditor
             if (InputReader.Instance != null)
             {
                 InputReader.Instance.KickPressed -= PlaceCurentBlock;
+                InputReader.Instance.MouseScroll -= RotateCurentBlock;
                 InputReader.Instance.ItemPressed -= DeleteBlockUnderMouse;
             }
             else

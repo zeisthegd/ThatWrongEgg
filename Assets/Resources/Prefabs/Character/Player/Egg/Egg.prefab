@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MinRemoteKickedDistance: 2
+  KickForceMultiplier: 1
 --- !u!114 &4395238705890332487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,7 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DistanceToTeleport: 5
-  UpdatePosition: 1
+  UpdateTransform: 1
   PositionSmoothDampTime: 0.1
   RotationSmoothDampTime: 0.1
 --- !u!136 &591209063

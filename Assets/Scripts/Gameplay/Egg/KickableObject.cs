@@ -11,6 +11,7 @@ namespace Penwyn.Game
     public class KickableObject : MonoBehaviourPun
     {
         public float MinRemoteKickedDistance = 1;// To reduce lag cheating.
+        public float KickForceMultiplier = 1;
         protected CharacterController _controller;
 
         protected virtual void Awake()
@@ -34,7 +35,7 @@ namespace Penwyn.Game
         {
             if (Vector3.Distance(this.transform.position, kickedPosition) < MinRemoteKickedDistance)
             {
-                _controller.AddForce(force, ForceMode.Impulse);
+                _controller.AddForce(force * KickForceMultiplier, ForceMode.Impulse);
             }
             else
             {

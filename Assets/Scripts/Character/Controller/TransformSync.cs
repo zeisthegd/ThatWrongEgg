@@ -9,7 +9,7 @@ namespace Penwyn.Game
     public class TransformSync : MonoBehaviourPun, IPunObservable
     {
         public float DistanceToTeleport = 5;
-        public bool UpdatePosition = true;
+        public bool UpdateTransform = true;
         public float PositionSmoothDampTime = 0.1F;
         public float RotationSmoothDampTime = 0.1F;
 
@@ -23,6 +23,7 @@ namespace Penwyn.Game
         protected float _rotationLerpSpeed;
         protected CharacterController _controller;
 
+        protected Vector3 _refPosition = Vector3.zero;
         protected Vector3 _refVelocity = Vector3.zero;
         protected Vector3 _refRotationVelocity = Vector3.zero;
 
@@ -37,12 +38,22 @@ namespace Penwyn.Game
             if (!photonView.IsMine)
             {
                 // Smooth damp the current transform and the remote transform.
-                if (UpdatePosition)
+                if (UpdateTransform)
                 {
-                    _controller.SetPosition(Vector3.SmoothDamp(_controller.transform.position, _remotePosition, ref _refVelocity, PositionSmoothDampTime));
-
                     Vector3 angle = Vector3.SmoothDamp(transform.eulerAngles, _remoteEulerAngle, ref _refRotationVelocity, RotationSmoothDampTime);
                     _controller.transform.rotation = Quaternion.Euler(angle);
+                }
+            }
+        }
+
+        void FixedUpdate()
+        {
+            if (!photonView.IsMine)
+            {
+                if (UpdateTransform)
+                {
+                    _controller.SetPosition(Vector3.SmoothDamp(_controller.transform.position, _remotePosition, ref _refPosition, PositionSmoothDampTime));
+                    _controller.SetVelocity(Vector3.SmoothDamp(_controller.Velocity, _remoteVelocity, ref _refVelocity, PositionSmoothDampTime));
                 }
             }
         }

@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DistanceToTeleport: 5
-  UpdatePosition: 1
+  UpdateTransform: 1
   PositionSmoothDampTime: 0.1
   RotationSmoothDampTime: 0.1
 --- !u!114 &3969784157335415802
@@ -218,6 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MinRemoteKickedDistance: 1
+  KickForceMultiplier: 0.5
 --- !u!1 &3320821570543588154
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,8 +293,8 @@ MonoBehaviour:
   Name: 
   ForbidPermissionCharacterStates: 
   ForbidPermissionControllerStates: 
-  MaxJumpForce: 3
-  ReleaseEarlyForce: 6
+  MaxJumpForce: 6
+  ReleaseEarlyForce: 2
 --- !u!114 &3891350418776485478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,7 +316,7 @@ MonoBehaviour:
   KickAngle: 180
   TargetMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 1088
   ObstacleMask:
     serializedVersion: 2
     m_Bits: 256

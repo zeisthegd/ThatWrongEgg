@@ -43,7 +43,6 @@ namespace Penwyn.Game
                         RunRaw(InputReader.Instance.MoveInput.normalized);
                     else
                         RunAccelerate(InputReader.Instance.MoveInput.normalized);
-                    Debug.Log(_controller.Velocity.magnitude);
                 }
                 else
                 {

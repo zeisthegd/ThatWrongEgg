@@ -20,6 +20,7 @@ namespace Penwyn.UI
         [Header("Match")]
         public TMP_Text TimerTxt;
         public TMP_Text PingTxt;
+        public TMP_Text FPSTxt;
 
 
         protected Character _localPlayer;
@@ -35,6 +36,7 @@ namespace Penwyn.UI
         {
             TimerTxt.SetText(CombatManager.Instance.CurrentRoundTime + "");
             PingTxt.SetText(PhotonNetwork.GetPing() + "");
+            FPSTxt.SetText((int)(1.0F / Time.deltaTime) + "");
         }
 
 
