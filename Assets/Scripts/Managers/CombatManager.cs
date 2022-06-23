@@ -17,7 +17,8 @@ namespace Penwyn.Game
 {
     public class CombatManager : SingletonMonoBehaviour<CombatManager>
     {
-        [ReadOnly] public Player CurrentPlayer;
+        public string GolfBallPath;
+
         protected PhotonView _photonView;
 
 
@@ -27,7 +28,7 @@ namespace Penwyn.Game
         public event UnityAction ScoreChanged;
 
         protected MatchSettings _matchSettings;
-
+        protected GolfBall Ball;
 
         protected float _timerStart = 0;
 
@@ -35,11 +36,6 @@ namespace Penwyn.Game
         {
             _photonView = GetComponent<PhotonView>();
             PlayerMatchDatas();
-        }
-
-        protected virtual void Update()
-        {
-            HandleRoundTimeEnded();
         }
 
         public virtual void StartGame()
@@ -57,83 +53,39 @@ namespace Penwyn.Game
             }
         }
 
-        #region Egg Type Assignment-------------------------------------------------------------------------------------
+        #region Ball Spqwning -------------------------------------------------------------------------------------
 
-        public virtual void AssignEggsType()
+        public virtual void CreateBallOnMaster()
         {
-            if (PhotonNetwork.IsMasterClient == false)
-                return;
-            // Only call if player is master client.
-            int bombCount = 0;
-            for (int i = 0; i < PlayerManager.Instance.PlayerInRoom.Count; i++)
+            // Only act if player is master client.
+            if (PhotonNetwork.IsMasterClient == true)
             {
-                if (PlayerManager.Instance.PlayerInRoom.Count - i == 1 && bombCount == 0)
-                {
-                    PlayerManager.Instance.PlayerInRoom[i].CharacterEggManager.Egg.RPC_ChangeType(EggType.Bomb);
-                    bombCount++;
-                }
-                else
-                {
-                    EggType type = Randomizer.RandomBetween(0, 1) == 0 ? EggType.Normal : EggType.Bomb;
-                    PlayerManager.Instance.PlayerInRoom[i].CharacterEggManager.Egg.RPC_ChangeType(type);
-                    if (type == EggType.Bomb)
-                        bombCount++;
-
-                }
+                Ball = PhotonNetwork.Instantiate(GolfBallPath, Vector3.up, Quaternion.identity).GetComponent<GolfBall>();
+                Ball.PlayerTouched += RPC_GolfTouchPlayer;
             }
+        }
+
+        public virtual void AssignBall(GolfBall ball)
+        {
+            if (Ball == null)
+                Ball = ball;
+            DontDestroyOnLoad(Ball);
         }
 
         #endregion
 
-        #region Timer and Time Handler-------------------------------------------------------------------------------------
+        #region Golf Touch Player -------------------------------------------------------------------------------------
 
-        public virtual void MasterRPC_StartTimer()
+        public virtual void RPC_GolfTouchPlayer(Character character)
         {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                _photonView.RPC(nameof(StartTimer), RpcTarget.AllViaServer, PhotonNetwork.ServerTimestamp / 1000);
-            }
+            _photonView.RPC(nameof(GolfTouchPlayer), RpcTarget.All, character.photonView.OwnerActorNr);
         }
 
         [PunRPC]
-        public virtual void StartTimer(int serverTime)
+        public virtual void GolfTouchPlayer(int playerOwnerActorNumber)
         {
-            _timerStart = serverTime;
-        }
-
-        private void HandleRoundTimeEnded()
-        {
-            if (CurrentRoundTime == 0 && GameManager.Instance.IsGameStarted)
-            {
-                //Disable input.
-                InputReader.Instance.DisableGameplayInput();
-                //Explode all bomb eggs.
-                var eggs = FindObjectsOfType<Egg>();
-                for (int i = 0; i < eggs.Length; i++)
-                {
-                    if (eggs[i].Type == EggType.Bomb)
-                    {
-                        eggs[i].Explode();
-                    }
-                }
-                GameManager.Instance.RPC_LoadNextLevel();
-            }
-        }
-
-        #endregion
-
-        #region Egg Death-------------------------------------------------------------------------------------
-
-        public virtual void LocalPlayerEggDeath()
-        {
-            _photonView.RPC(nameof(PlayerEggDeath), RpcTarget.All, PhotonNetwork.LocalPlayer);
-        }
-
-        [PunRPC]
-        public virtual void PlayerEggDeath(Player player)
-        {
-            Debug.Log(player.NickName);
-            ScoreChanged?.Invoke();
+            Character player = PlayerManager.Instance.FindByOwnerActorNumber(playerOwnerActorNumber);
+            Debug.Log(player);
         }
 
         public virtual void ResetDeathCount()
@@ -148,15 +100,10 @@ namespace Penwyn.Game
 
         public virtual void ConnectPlayerEvents()
         {
-            PlayerManager.Instance.LocalPlayer.CharacterEggManager.Egg.Health.OnDeath += LocalPlayerEggDeath;
         }
 
         public virtual void DisconnectEvents()
         {
-            if (PlayerManager.Instance != null && PlayerManager.Instance.LocalPlayer != null)
-            {
-                PlayerManager.Instance.LocalPlayer.CharacterEggManager.Egg.Health.OnDeath -= LocalPlayerEggDeath;
-            }
         }
 
         protected virtual void OnDisable()
@@ -178,13 +125,6 @@ namespace Penwyn.Game
                     return 0;
             }
         }
-    }
-
-    public enum Turn
-    {
-        Self,
-        Enemy,
-        Teammate
     }
 }
 

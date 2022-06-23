@@ -41,7 +41,7 @@ namespace Penwyn.Game
                 // Smooth damp the current transform and the remote transform.
                 if (UpdateTransform)
                 {
-                    Debug.Log("Quaternion Angle: " + Quaternion.Angle(transform.rotation, _remoteRotation));
+                    //Debug.Log("Quaternion Angle: " + Quaternion.Angle(transform.rotation, _remoteRotation));
                     if (Quaternion.Angle(transform.rotation, _remoteRotation) > MaxAngleDifferenceBeforeRotate)
                     {
                         Vector3 angle = Vector3.SmoothDamp(transform.eulerAngles, _remoteEulerAngle, ref _refRotationVelocity, RotationSmoothDampTime);

@@ -86,8 +86,7 @@ namespace Penwyn.Game
             yield return new WaitForSeconds(MatchSettings.LevelLoadTime + MatchSettings.PlayerPositioningTime);
 
             InputReader.Instance.EnableGameplayInput();
-            CombatManager.AssignEggsType();
-            CombatManager.MasterRPC_StartTimer();
+            CombatManager.CreateBallOnMaster();
 
             _gameState = GameState.Started;
         }
@@ -110,8 +109,6 @@ namespace Penwyn.Game
 
             CombatManager.ResetDeathCount();
             InputReader.Instance.EnableGameplayInput();
-            CombatManager.AssignEggsType();
-            CombatManager.MasterRPC_StartTimer();
 
             _gameState = GameState.Started;
         }

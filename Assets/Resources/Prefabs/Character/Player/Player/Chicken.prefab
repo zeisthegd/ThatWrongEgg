@@ -264,7 +264,6 @@ GameObject:
   - component: {fileID: 3320821570543588156}
   - component: {fileID: 3320821570543588158}
   - component: {fileID: 3891350418776485478}
-  - component: {fileID: 339114158068521118}
   - component: {fileID: 5821197060409044627}
   m_Layer: 0
   m_Name: Abilities
@@ -355,27 +354,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   Target: {fileID: 0}
---- !u!114 &339114158068521118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3320821570543588154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9306f11749a8dbc47b1e0d60d8f5730c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AbilityPermitted: 1
-  Name: 
-  ForbidPermissionCharacterStates: 
-  ForbidPermissionControllerStates: 
-  EggPath: Prefabs/Character/Player/Egg/Egg
-  NormalSkinMaterial: {fileID: 2100000, guid: e22e52b5d302f8f46866420dd9216dec, type: 2}
-  BombSkinMaterial: {fileID: 2100000, guid: 069371f21b0f50f44a75806362cbc119, type: 2}
-  SpawnOffset: {x: 0, y: 1, z: 0}
-  Egg: {fileID: 0}
 --- !u!114 &5821197060409044627
 MonoBehaviour:
   m_ObjectHideFlags: 0

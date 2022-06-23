@@ -38,7 +38,6 @@ namespace Penwyn.Game
                 LocalPlayer = player.FindComponent<Character>();
                 PlayerSpawned?.Invoke();
                 Debug.Log("Player Created!");
-                LocalPlayer.CharacterEggManager.CreateNetworkedEgg();
             }
             FindPlayersInRooms();
         }

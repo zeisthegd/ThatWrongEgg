@@ -5,8 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - UserInterface
-  - Egg
   - Spawn
+  - Ball
   layers:
   - Default
   - TransparentFX
@@ -18,7 +18,7 @@ TagManager:
   - Projectile
   - Platform
   - Collectibles
-  - Egg
+  - GolfBall
   - 
   - 
   - 
