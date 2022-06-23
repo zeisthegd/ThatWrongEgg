@@ -54,6 +54,7 @@ MonoBehaviour:
   - ChangeEggType
   - PlayerEggDeath
   - StartTimer
+  - GetGrabbed
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

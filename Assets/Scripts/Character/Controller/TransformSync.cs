@@ -12,6 +12,7 @@ namespace Penwyn.Game
         public bool UpdateTransform = true;
         public float PositionSmoothDampTime = 0.1F;
         public float RotationSmoothDampTime = 0.1F;
+        public float MaxAngleDifferenceBeforeRotate = 10;
 
         protected Vector3 _remotePosition;
         protected Vector3 _remoteVelocity;
@@ -40,8 +41,12 @@ namespace Penwyn.Game
                 // Smooth damp the current transform and the remote transform.
                 if (UpdateTransform)
                 {
-                    Vector3 angle = Vector3.SmoothDamp(transform.eulerAngles, _remoteEulerAngle, ref _refRotationVelocity, RotationSmoothDampTime);
-                    _controller.transform.rotation = Quaternion.Euler(angle);
+                    Debug.Log("Quaternion Angle: " + Quaternion.Angle(transform.rotation, _remoteRotation));
+                    if (Quaternion.Angle(transform.rotation, _remoteRotation) > MaxAngleDifferenceBeforeRotate)
+                    {
+                        Vector3 angle = Vector3.SmoothDamp(transform.eulerAngles, _remoteEulerAngle, ref _refRotationVelocity, RotationSmoothDampTime);
+                        _controller.transform.rotation = Quaternion.Euler(angle);
+                    }
                 }
             }
         }
@@ -53,7 +58,7 @@ namespace Penwyn.Game
                 if (UpdateTransform)
                 {
                     _controller.SetPosition(Vector3.SmoothDamp(_controller.transform.position, _remotePosition, ref _refPosition, PositionSmoothDampTime));
-                    _controller.SetVelocity(Vector3.SmoothDamp(_controller.Velocity, _remoteVelocity, ref _refVelocity, PositionSmoothDampTime));
+                    //_controller.SetVelocity(Vector3.SmoothDamp(_controller.Velocity, _remoteVelocity, ref _refVelocity, PositionSmoothDampTime));
                 }
             }
         }

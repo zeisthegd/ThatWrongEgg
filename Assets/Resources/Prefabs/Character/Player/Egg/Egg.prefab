@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 316344040867518984}
   - component: {fileID: 591209063}
   - component: {fileID: 4928619526162921985}
+  - component: {fileID: 711267513203460339}
   m_Layer: 10
   m_Name: Egg
   m_TagString: Egg
@@ -201,6 +202,7 @@ MonoBehaviour:
   UpdateTransform: 1
   PositionSmoothDampTime: 0.1
   RotationSmoothDampTime: 0.1
+  MaxAngleDifferenceBeforeRotate: 1
 --- !u!136 &591209063
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -237,6 +239,18 @@ MonoBehaviour:
   DeathFeedbacks: {fileID: 0}
   _health: 10
   _maxHealth: 10
+--- !u!114 &711267513203460339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4981003123416204406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0873a3ff5700939428dbc4c6bfa13746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8288294394239801746
 GameObject:
   m_ObjectHideFlags: 0

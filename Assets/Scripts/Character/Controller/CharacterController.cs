@@ -85,7 +85,7 @@ namespace Penwyn.Game
         {
             if (Dust != null)
             {
-                if (Velocity.magnitude > 0)
+                if (Velocity.magnitude > 0 && IsTouchingGround)
                 {
                     if (!Dust.isPlaying)
                         Dust.Play();
